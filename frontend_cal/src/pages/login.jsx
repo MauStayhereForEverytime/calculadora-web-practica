@@ -1,47 +1,52 @@
 import { useState } from 'react'
 
+
+import { useNavigate } from 'react-router-dom';
+
 export default function Login({ onLoginSuccess }) {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
+    e.preventDefault();
+    setError('');
+    setLoading(true);
 
-    // Validación básica
     if (!email || !password) {
-      setError('Por favor completa todos los campos')
-      setLoading(false)
-      return
+      setError('Por favor completa todos los campos');
+      setLoading(false);
+      return;
     }
-
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError('Por favor ingresa un correo válido')
-      setLoading(false)
-      return
+      setError('Por favor ingresa un correo válido');
+      setLoading(false);
+      return;
     }
 
     try {
-      // Aquí irá la llamada a tu API de Django
-      // const response = await fetch('http://localhost:8000/api/login', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, password })
-      // })
-
-      // Por ahora, simulamos el login exitoso
-      setTimeout(() => {
-        onLoginSuccess({ email, username: email.split('@')[0] })
-      }, 500)
+      const response = await fetch('http://localhost:8000/api/login/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await response.json();
+      if (response.ok) {
+        onLoginSuccess ? onLoginSuccess(data) : null;
+        setError('');
+        // Redirigir a la calculadora o dashboard
+        navigate('/calculator');
+      } else {
+        setError(data.error || 'Credenciales inválidas');
+      }
     } catch (err) {
-      setError('Error al conectar con el servidor')
-      setLoading(false)
+      setError('Error al conectar con el servidor');
     }
-  }
+    setLoading(false);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-300 via-blue-200 to-white flex items-center justify-center p-4 relative overflow-hidden">
@@ -138,6 +143,7 @@ export default function Login({ onLoginSuccess }) {
                 <button
                   type="button"
                   className="text-sky-600 hover:text-sky-800 font-bold transition-colors hover:underline"
+                  onClick={() => navigate('/register')}
                 >
                   Regístrate aquí
                 </button>
