@@ -1,28 +1,36 @@
-import { useState } from 'react'
-import Login from './pages/Login'
-import Calculator from './pages/Calculator'
-import './App.css'
+
+import { useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Login from './pages/login';
+import Register from './pages/Register';
+import Calculator from './pages/Calculator';
+import './App.css';
+
 
 function App() {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
 
   const handleLoginSuccess = (userData) => {
-    setUser(userData)
-  }
+    setUser(userData);
+  };
 
   const handleLogout = () => {
-    setUser(null)
-  }
+    setUser(null);
+  };
 
   return (
-    <>
-      {!user ? (
-        <Login onLoginSuccess={handleLoginSuccess} />
-      ) : (
-        <Calculator user={user} onLogout={handleLogout} />
-      )}
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
+        <Route path="/register" element={<Register />} />
+        <Route
+          path="/calculator"
+          element={user ? <Calculator user={user} onLogout={handleLogout} /> : <Navigate to="/login" />}
+        />
+        <Route path="*" element={<Navigate to="/login" />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App

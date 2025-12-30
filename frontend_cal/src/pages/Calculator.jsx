@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ejecutarOperacion } from '../funciones/operaciones'
 
 export default function Calculator({ user, onLogout }) {
   const [display, setDisplay] = useState('0')
@@ -30,19 +31,15 @@ export default function Calculator({ user, onLogout }) {
     setWaitingForNewValue(true)
   }
 
+  /**
+   * Calcula el resultado de una operación usando las funciones importadas
+   * @param {number} prev - Valor anterior
+   * @param {number} current - Valor actual
+   * @param {string} op - Operación a realizar
+   * @returns {number} Resultado de la operación
+   */
   const calculate = (prev, current, op) => {
-    switch (op) {
-      case '+':
-        return prev + current
-      case '-':
-        return prev - current
-      case '*':
-        return prev * current
-      case '/':
-        return current !== 0 ? prev / current : 0
-      default:
-        return current
-    }
+    return ejecutarOperacion(prev, current, op)
   }
 
   const handleEquals = () => {
