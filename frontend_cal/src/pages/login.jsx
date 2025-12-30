@@ -93,12 +93,12 @@ export default function Login({ onLoginSuccess }) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full px-5 py-4 border-2 border-sky-300 rounded-xl focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200 transition-all bg-sky-50/50 text-lg"
+                  className="w-full px-5 py-4 pr-14 border-2 border-sky-300 rounded-xl focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200 transition-all bg-sky-50/50 text-lg"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-4 text-gray-600 hover:text-sky-500 text-xl transition-colors"
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-sky-500 text-xl transition-colors"
                 >
                   {showPassword ? '👁️' : '👁️‍🗨️'}
                 </button>
